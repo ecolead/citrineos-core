@@ -32,7 +32,7 @@ export class Connector extends BaseModelWithTenant implements IConnectorDto {
   @ForeignKey(() => Evse)
   @Column({
     unique: 'evseId_evseTypeConnectorId',
-    allowNull: false,
+    allowNull: true,
     type: DataType.INTEGER,
   })
   declare evseId: number;
@@ -46,7 +46,7 @@ export class Connector extends BaseModelWithTenant implements IConnectorDto {
 
   @Column({
     unique: 'evseId_evseTypeConnectorId',
-    allowNull: false,
+    allowNull: true,
     type: DataType.INTEGER,
   })
   declare evseTypeConnectorId?: number; // This is the serial int starting at 1 used in OCPP 2.0.1 to refer to the connector, unique per EVSE.

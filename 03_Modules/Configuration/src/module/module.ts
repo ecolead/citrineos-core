@@ -705,6 +705,8 @@ export class ConfigurationModule extends AbstractModule {
         imsi: request.imsi,
         meterType: request.meterType,
         meterSerialNumber: request.meterSerialNumber,
+        protocol: OCPPVersion.OCPP1_6,
+        isOnline: true,
       }),
     );
     // Check if response was successful

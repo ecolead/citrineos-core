@@ -240,6 +240,8 @@ export class SequelizeLocationRepository
             imsi: chargingStation.imsi,
             meterType: chargingStation.meterType,
             meterSerialNumber: chargingStation.meterSerialNumber,
+            protocol: chargingStation.protocol,
+            isOnline: chargingStation.isOnline,
           },
         });
       if (!chargingStationCreated) {
@@ -256,6 +258,8 @@ export class SequelizeLocationRepository
             imsi: chargingStation.imsi,
             meterType: chargingStation.meterType,
             meterSerialNumber: chargingStation.meterSerialNumber,
+            protocol: chargingStation.protocol,
+            isOnline: chargingStation.isOnline,
           },
           savedChargingStation.id,
         );

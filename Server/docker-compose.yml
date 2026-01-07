@@ -119,6 +119,8 @@ services:
       timeout: 10s
       retries: 5
       start_period: 60s
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
   minio:
     image: minio/minio
