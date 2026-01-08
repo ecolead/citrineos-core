@@ -45,6 +45,8 @@ services:
       - ../tsconfig.json:/usr/local/apps/citrineos/tsconfig.json
       - ../tsconfig.build.json:/usr/local/apps/citrineos/tsconfig.build.json
       - ../Server:/usr/local/apps/citrineos/Server
+      # Mount certificates directory to keep them in sync with host
+      - ../Server/dist/assets/certificates:/usr/local/apps/citrineos/Server/dist/assets/certificates
       - ../00_Base:/usr/local/apps/citrineos/00_Base
       - ../01_Data:/usr/local/apps/citrineos/01_Data
       - ../02_Util:/usr/local/apps/citrineos/02_Util
