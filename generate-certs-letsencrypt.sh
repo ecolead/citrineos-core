@@ -76,6 +76,7 @@ certbot certonly --standalone \
     --agree-tos \
     --non-interactive \
     --preferred-challenges http \
+    --cert-name "$DOMAIN" \
     --key-type rsa \
     --rsa-key-size 2048 \
     || {
