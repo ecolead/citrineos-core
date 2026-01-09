@@ -65,8 +65,9 @@ if lsof -Pi :80 -sTCP:LISTEN -t >/dev/null 2>&1; then
     fi
 fi
 
-# Obtain or renew certificate
-echo "📜 Obtaining Let's Encrypt certificate..."
+# Obtain or renew certificate (RSA for OCPP cipher suite compatibility)
+echo "📜 Obtaining Let's Encrypt RSA certificate..."
+echo "   (RSA certificate required for all 4 OCPP 2.0.1 cipher suites)"
 echo ""
 
 certbot certonly --standalone \
@@ -75,6 +76,8 @@ certbot certonly --standalone \
     --agree-tos \
     --non-interactive \
     --preferred-challenges http \
+    --key-type rsa \
+    --rsa-key-size 2048 \
     || {
         echo ""
         echo "❌ Failed to obtain certificate from Let's Encrypt"
@@ -151,12 +154,35 @@ fi
 echo ""
 echo "✨ All done!"
 echo ""
+echo "� OCPP 2.0.1 Cipher Suite Configuration"
+echo "========================================"
+echo ""
+echo "The RSA certificate supports all 4 required OCPP cipher suites:"
+echo "  ✅ TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+echo "  ✅ TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384"
+echo "  ✅ TLS_RSA_WITH_AES_128_GCM_SHA256"
+echo "  ✅ TLS_RSA_WITH_AES_256_GCM_SHA384"
+echo ""
+echo "�📝 Configure CitrineOS WebSocket Server:"
+echo ""
+echo "   Edit: Server/src/config/envs/production.ts (or your config file)"
+echo "   Add to websocket server configuration:"
+echo ""
+echo "   ciphers: 'ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-GCM-SHA384'"
+echo "   minVersion: 'TLSv1.2'"
+echo ""
 echo "📝 Next steps:"
-echo "   1. Update your charging stations to connect to: wss://$DOMAIN:8443"
-echo "   2. Set up auto-renewal with cron:"
+echo "   1. Restart CitrineOS to apply new certificates"
+echo "   2. Update charging stations to connect to: wss://$DOMAIN:8443"
+echo "   3. Set up auto-renewal with cron:"
 echo "      sudo crontab -e"
 echo "      Add: 0 2 * * * $(realpath "$0") && $(realpath "$(dirname "$0")/update-certs-api.sh")"
 echo ""
-echo "   3. Test renewal manually:"
+echo "   4. Test renewal manually:"
 echo "      sudo certbot renew --dry-run"
 echo ""
+echo "🧪 Test cipher suites after CitrineOS restart:"
+echo "   openssl s_client -connect $DOMAIN:8443 -cipher 'ECDHE-RSA-AES128-GCM-SHA256' -tls1_2"
+echo "   openssl s_client -connect $DOMAIN:8443 -cipher 'AES128-GCM-SHA256' -tls1_2"
+echo ""
+
